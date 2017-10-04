@@ -15,6 +15,9 @@
 #   ~ Added fix_row function that handles missing input headers better than previously
 #   ~ Renamed find_downloads() to find_directory()
 #   ~ Added header_swap function
+# 2017-10-04
+#   ~ Added g_hasheaders variable for if data is missing column headers
+#   ~ Actually implemented csv delimiter in csv function!
 
 # OPERATIONS
 #   ~ Find & open TransactionExport.csv for processing
@@ -33,6 +36,7 @@ g_filepath = ""
 g_suffix = ".csv"
 g_fixed_prefix = "fixed_"
 g_delimiter = ","
+g_hasheaders = False
 #
 
 # don't edit below here unless you know what you're doing!
@@ -50,7 +54,7 @@ def clean_data(file):
     # extract data from transaction file
     output_data = []
     with open(file) as transaction_file:
-        transaction_reader = csv.reader(transaction_file)
+        transaction_reader = csv.reader(transaction_file, delimiter = g_delimiter)
         transaction_data = list(transaction_reader)
 
         # make each row of our new transaction file
@@ -59,7 +63,10 @@ def clean_data(file):
             output_data.append(fix_row(row))
 
         # fix column headers
-        output_data[0] = g_output_columns
+        if g_hasheaders is True:
+            output_data.insert(0, g_output_columns)
+        else:
+            output_data[0] = g_output_columns
     
     return output_data
     
