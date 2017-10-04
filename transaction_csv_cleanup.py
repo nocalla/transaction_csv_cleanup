@@ -36,7 +36,7 @@ g_filepath = ""
 g_suffix = ".csv"
 g_fixed_prefix = "fixed_"
 g_delimiter = ","
-g_hasheaders = False
+g_hasheaders = True
 #
 
 # don't edit below here unless you know what you're doing!
@@ -63,7 +63,7 @@ def clean_data(file):
             output_data.append(fix_row(row))
 
         # fix column headers
-        if g_hasheaders is True:
+        if g_hasheaders is False:
             output_data.insert(0, g_output_columns)
         else:
             output_data[0] = g_output_columns
